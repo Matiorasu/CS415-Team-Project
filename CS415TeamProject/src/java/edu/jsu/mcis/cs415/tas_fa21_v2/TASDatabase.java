@@ -674,6 +674,16 @@ public class TASDatabase {
     
     /* HTML METHODS */
     
+    /**
+     * Returns a list of employees in specified department(s) as an HTML
+     * SELECT list.
+     * @param departments A list of {@link Department} objects, indicating
+     * which departments' employees should be included in the list.  Leave this
+     * argument null to get all employees.
+     * @return An HTML string containing the SELECT element, ready to be
+     * embedded as a dynamic element in a JSP page.
+     * @see Department
+     */
     public String getEmployeesAsSelectList(ArrayList<Department> departments) {
         
         StringBuilder s = new StringBuilder();
