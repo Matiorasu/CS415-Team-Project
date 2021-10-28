@@ -652,6 +652,26 @@ public class TASDatabase {
         
     } // </editor-fold>
     
+    /* DELETE METHODS */
+    
+    public boolean deletePunch(int id) {
+        
+        int rows = 0;
+        
+        try {
+            
+            String query = "DELETE FROM punch WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+            rows = pstmt.executeUpdate();
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+
+        return (rows == 1);
+        
+    }
+    
     /* PRIVATE METHODS */
     
     // <editor-fold defaultstate="collapsed" desc="openConnection(): Click on the + sign on the left to edit the code.">
