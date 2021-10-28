@@ -672,6 +672,81 @@ public class TASDatabase {
         
     }
     
+    /* HTML METHODS */
+    
+    public String getEmployeesAsSelectList(ArrayList<Department> departments) {
+        
+        StringBuilder s = new StringBuilder();
+        
+        try {
+            
+            String query;
+            PreparedStatement pstatement;
+            boolean hasresults = false;
+            
+            if ( departments == null || (departments.isEmpty()) ) {
+                
+                query = "SELECT employee.id, employee.departmentid, badge.id AS badgeid, department.description AS departmentdescription, badge.description FROM ((employee JOIN badge ON employee.badgeid = badge.id) JOIN department ON employee.departmentid = department.id) ORDER BY lastname";
+                pstatement = conn.prepareStatement(query);
+                hasresults = pstatement.execute();
+                
+            }
+            else {
+                
+                StringBuilder departmentidlist = new StringBuilder();
+                
+                for (int i = 0; i < departments.size(); ++i) {
+                    if (i > 0)
+                        departmentidlist.append(", ");
+                    departmentidlist.append('?');
+                }
+                
+                query = "SELECT employee.id, employee.departmentid, badge.id AS badgeid, department.description AS departmentdescription, badge.description FROM ((employee JOIN badge ON employee.badgeid = badge.id) JOIN department ON employee.departmentid = department.id) WHERE (departmentid IN (" + departmentidlist.toString() + ")) ORDER BY lastname";
+                
+                System.out.println(query);
+                
+                pstatement = conn.prepareStatement(query);
+                
+                for (int i = 0; i < departments.size(); ++i) {
+                    
+                    pstatement.setInt(i + 1, departments.get(i).getId());
+                    System.out.println("Param: " + (i+1) + ": " + departments.get(i).getId());
+                }
+                
+                hasresults = pstatement.execute();
+                
+            }
+            
+            if (hasresults) {
+                
+                ResultSet resultset = pstatement.getResultSet();
+                
+                s.append("<select name=\"employeeid\" size=\"1\" id=\"employeeid\">\n");
+                s.append("<option selected value=\"0\">(please select an employee)</option>\n");
+                
+                while (resultset.next()) {
+                    
+                    s.append("<option value=\"");
+                    s.append(resultset.getInt("id"));
+                    s.append("\">");
+                    s.append(resultset.getString("description")).append(" (");
+                    s.append(resultset.getString("departmentdescription"));
+                    s.append(") (#").append(resultset.getString("badgeid")).append(")");
+                    s.append("</option>\n");
+                    
+                }
+                
+                s.append("</select>\n");
+                
+            }            
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return s.toString();
+        
+    }
+    
     /* PRIVATE METHODS */
     
     // <editor-fold defaultstate="collapsed" desc="openConnection(): Click on the + sign on the left to edit the code.">
