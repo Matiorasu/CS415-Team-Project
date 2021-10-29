@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="db" class="edu.jsu.mcis.cs415.tas_fa21_v2.TASDatabase" scope="session"/>
+
 <!DOCTYPE html>
 <html>
     
@@ -14,6 +16,16 @@
     <body>
         
         <p>Congratulations, you have logged in successfully!</p>
+        
+        <%
+            if ( (request.isUserInRole("admin")) || (request.isUserInRole("secretary")) ) {
+        %>
+        <p>
+            <a href="<%= request.getContextPath() %>/main/punchedit1.jsp">Edit Punches</a>
+        </p>
+        <%
+            }
+        %>
         
         <p>
             <a href="<%= request.getContextPath() %>/main/page1.jsp">Placeholder #1</a>

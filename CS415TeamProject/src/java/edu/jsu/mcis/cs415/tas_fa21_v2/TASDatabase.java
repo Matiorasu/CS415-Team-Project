@@ -271,9 +271,56 @@ public class TASDatabase {
 
         return employee;
         
+    }
+    
+    public Employee getEmployee(int id) {
+        
+        Employee employee = null;
+        
+        try {
+        
+            String query = "SELECT employee.badgeid FROM employee WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+            
+            boolean hasresults = pstmt.execute();
+            
+            if ( hasresults ) {
+                
+                ResultSet resultset = pstmt.getResultSet();
+                
+                if (resultset.next()) {
+                    
+                    String badgeid = resultset.getString("badgeid");
+                    
+                    employee = getEmployee(getBadge(badgeid));
+                    
+                }
+                
+            }
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+
+        return employee;
+        
     } // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="getPayPeriodPunchList(): Click on the + sign on the left to edit the code.">
+    
+    public ArrayList<Punch> getPayPeriodPunchList(int employeeid, LocalDate payperiod) {
+        
+        Employee employee = getEmployee(employeeid);
+        Badge badge = employee.getBadge();
+        Shift shift = getShift(badge);
+        
+        ArrayList<Punch> punchlist = getPayPeriodPunchList(badge, payperiod, shift);
+
+        System.err.println("Punch List Size: " + punchlist.size());
+        
+        return punchlist;
+        
+    }
     
     public ArrayList<Punch> getPayPeriodPunchList(Badge badge, LocalDate payperiod, Shift shift) {
         

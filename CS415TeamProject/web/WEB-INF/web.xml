@@ -5,9 +5,17 @@
         <servlet-name>TestServlet</servlet-name>
         <servlet-class>edu.jsu.mcis.cs415.teamproject.TestServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PunchList</servlet-name>
+        <servlet-class>edu.jsu.mcis.cs415.teamproject.PunchList</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/main/TestServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PunchList</servlet-name>
+        <url-pattern>/main/PunchList</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
