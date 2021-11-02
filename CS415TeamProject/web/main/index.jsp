@@ -18,16 +18,6 @@
             if ( (request.isUserInRole("admin")) || (request.isUserInRole("secretary")) ) {
         %>
         
-        <%
-            if ( (request.isUserInRole("admin")) || (request.isUserInRole("secretary")) ) {
-        %>
-        <p>
-            <a href="<%= request.getContextPath() %>/main/punchedit1.jsp">Edit Punches</a>
-        </p>
-        <%
-            }
-        %>
-        
         <p>
             <a href="<%= request.getContextPath() %>/main/punchedit1.jsp"><b>Punch Editing</b></a><br>
             Use this module to manually clock in or clock out an employee, or to
