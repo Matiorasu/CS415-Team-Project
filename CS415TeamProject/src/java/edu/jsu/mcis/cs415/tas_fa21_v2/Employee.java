@@ -56,5 +56,45 @@ public class Employee {
         return (s.toString());
         
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getDepartmentid() {
+        return departmentid;
+    }
+
+    public int getShiftid() {
+        return shiftid;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getMiddlename() {
+        return middlename;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public EmployeeType getEmployeetype() {
+        return employeetype;
+    }
+
+    public Badge getBadge() {
+        return badge;
+    }
+
+    public LocalDate getActive() {
+        return active;
+    }
+
+    public LocalDate getInactive() {
+        return inactive;
+    }
     
 }

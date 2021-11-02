@@ -271,9 +271,56 @@ public class TASDatabase {
 
         return employee;
         
+    }
+    
+    public Employee getEmployee(int id) {
+        
+        Employee employee = null;
+        
+        try {
+        
+            String query = "SELECT employee.badgeid FROM employee WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+            
+            boolean hasresults = pstmt.execute();
+            
+            if ( hasresults ) {
+                
+                ResultSet resultset = pstmt.getResultSet();
+                
+                if (resultset.next()) {
+                    
+                    String badgeid = resultset.getString("badgeid");
+                    
+                    employee = getEmployee(getBadge(badgeid));
+                    
+                }
+                
+            }
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+
+        return employee;
+        
     } // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="getPayPeriodPunchList(): Click on the + sign on the left to edit the code.">
+    
+    public ArrayList<Punch> getPayPeriodPunchList(int employeeid, LocalDate payperiod) {
+        
+        Employee employee = getEmployee(employeeid);
+        Badge badge = employee.getBadge();
+        Shift shift = getShift(badge);
+        
+        ArrayList<Punch> punchlist = getPayPeriodPunchList(badge, payperiod, shift);
+
+        System.err.println("Punch List Size: " + punchlist.size());
+        
+        return punchlist;
+        
+    }
     
     public ArrayList<Punch> getPayPeriodPunchList(Badge badge, LocalDate payperiod, Shift shift) {
         
@@ -651,6 +698,111 @@ public class TASDatabase {
         return id;
         
     } // </editor-fold>
+    
+    /* DELETE METHODS */
+    
+    public boolean deletePunch(int id) {
+        
+        int rows = 0;
+        
+        try {
+            
+            String query = "DELETE FROM punch WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+            rows = pstmt.executeUpdate();
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+
+        return (rows == 1);
+        
+    }
+    
+    /* HTML METHODS */
+    
+    /**
+     * Returns a list of employees in specified department(s) as an HTML
+     * SELECT list.
+     * @param departments A list of {@link Department} objects, indicating
+     * which departments' employees should be included in the list.  Leave this
+     * argument null to get all employees.
+     * @return An HTML string containing the SELECT element, ready to be
+     * embedded as a dynamic element in a JSP page.
+     * @see Department
+     */
+    public String getEmployeesAsSelectList(ArrayList<Department> departments) {
+        
+        StringBuilder s = new StringBuilder();
+        
+        try {
+            
+            String query;
+            PreparedStatement pstatement;
+            boolean hasresults = false;
+            
+            if ( departments == null || (departments.isEmpty()) ) {
+                
+                query = "SELECT employee.id, employee.departmentid, badge.id AS badgeid, department.description AS departmentdescription, badge.description FROM ((employee JOIN badge ON employee.badgeid = badge.id) JOIN department ON employee.departmentid = department.id) ORDER BY lastname";
+                pstatement = conn.prepareStatement(query);
+                hasresults = pstatement.execute();
+                
+            }
+            else {
+                
+                StringBuilder departmentidlist = new StringBuilder();
+                
+                for (int i = 0; i < departments.size(); ++i) {
+                    if (i > 0)
+                        departmentidlist.append(", ");
+                    departmentidlist.append('?');
+                }
+                
+                query = "SELECT employee.id, employee.departmentid, badge.id AS badgeid, department.description AS departmentdescription, badge.description FROM ((employee JOIN badge ON employee.badgeid = badge.id) JOIN department ON employee.departmentid = department.id) WHERE (departmentid IN (" + departmentidlist.toString() + ")) ORDER BY lastname";
+                
+                System.out.println(query);
+                
+                pstatement = conn.prepareStatement(query);
+                
+                for (int i = 0; i < departments.size(); ++i) {
+                    
+                    pstatement.setInt(i + 1, departments.get(i).getId());
+                    System.out.println("Param: " + (i+1) + ": " + departments.get(i).getId());
+                }
+                
+                hasresults = pstatement.execute();
+                
+            }
+            
+            if (hasresults) {
+                
+                ResultSet resultset = pstatement.getResultSet();
+                
+                s.append("<select name=\"employeeid\" size=\"1\" id=\"employeeid\">\n");
+                s.append("<option selected value=\"0\">(please select an employee)</option>\n");
+                
+                while (resultset.next()) {
+                    
+                    s.append("<option value=\"");
+                    s.append(resultset.getInt("id"));
+                    s.append("\">");
+                    s.append(resultset.getString("description")).append(" (");
+                    s.append(resultset.getString("departmentdescription"));
+                    s.append(") (#").append(resultset.getString("badgeid")).append(")");
+                    s.append("</option>\n");
+                    
+                }
+                
+                s.append("</select>\n");
+                
+            }            
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return s.toString();
+        
+    }
     
     /* PRIVATE METHODS */
     

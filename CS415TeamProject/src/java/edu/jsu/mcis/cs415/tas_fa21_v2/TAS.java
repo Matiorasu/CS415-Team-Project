@@ -11,7 +11,26 @@ public class TAS {
     
     public static void main(String[] args) {
         
-        // INSERT TEST CODE HERE
+        // Test for new "getEmployeesAsSelectList()" TASDatabase method
+        
+        TASDatabase db = new TASDatabase("localhost", "root", "CS488");
+        
+        ArrayList<Department> departments = new ArrayList<>();
+        
+        departments.add(db.getDepartment(7)); // Press
+        departments.add(db.getDepartment(9)); // Tool and Die
+        
+        // selected departments
+        
+        String html = db.getEmployeesAsSelectList(departments);
+        
+        System.out.println(html);
+        
+        // all departments
+        
+        html = db.getEmployeesAsSelectList(null);
+        
+        System.out.println(html);
         
     }
     
