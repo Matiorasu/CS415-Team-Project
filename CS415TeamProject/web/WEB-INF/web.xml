@@ -9,6 +9,11 @@
         <servlet-name>PunchList</servlet-name>
         <servlet-class>edu.jsu.mcis.cs415.teamproject.PunchList</servlet-class>
     </servlet>
+    <servlet>
+        <description>IndividualPunch</description>
+        <servlet-name>IndividualPunch</servlet-name>
+        <servlet-class>edu.jsu.mcis.cs415.teamproject.IndividualPunch</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/main/TestServlet</url-pattern>
@@ -16,6 +21,10 @@
     <servlet-mapping>
         <servlet-name>PunchList</servlet-name>
         <url-pattern>/main/PunchList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndividualPunch</servlet-name>
+        <url-pattern>/main/IndividualPunch</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
