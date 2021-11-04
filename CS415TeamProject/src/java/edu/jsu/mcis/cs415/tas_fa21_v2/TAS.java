@@ -81,6 +81,49 @@ public class TAS {
     }
     
     /**
+     * Returns a JSON string representing the punch data from an individual
+     * punch object.
+     * @param punch The punch object
+     * @return The single punch object's data as a JSON string
+     * @see Punch
+     */
+    @SuppressWarnings("unchecked")
+    public static String getPunchAsJSON(Punch punch) {
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        
+        JSONObject jsonObject = new JSONObject(); 
+        JSONArray jsonPunch = new JSONArray(); 
+        
+        String json = null;
+        
+        try {
+
+                jsonObject.put("originaltimestamp", punch.getOriginaltimestamp().format(dtf));
+                jsonObject.put("adjustedtimestamp", punch.getAdjustedtimestamp().format(dtf));
+
+                jsonObject.put("terminalid", String.valueOf(punch.getTerminalid()));
+                jsonObject.put("punchtype", String.valueOf(punch.getPunchtype()));
+
+                jsonObject.put("id", String.valueOf(punch.getId()));
+
+                jsonObject.put("badgeid", punch.getBadge().getId());
+                jsonObject.put("adjustmenttype", punch.getAdjustmenttype().toString());
+
+                jsonPunch.add(jsonObject); 
+
+            json = JSONValue.toJSONString(jsonPunch);
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return json;
+        
+    }
+    
+    
+    
+    /**
      * Returns a JSON string representing the punch data from the specified list
      * of punches, including total hours accrued (given as minutes) and the
      * employee's absenteeism (computed according to the specified shift rule
