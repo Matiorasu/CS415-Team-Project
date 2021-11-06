@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.jsu.mcis.cs415.tas_fa21_v2.*;
 
 public class IndividualPunch extends HttpServlet {
-
+ 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,9 +54,15 @@ public class IndividualPunch extends HttpServlet {
        doPost(request,response);
     }
     
+    @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+      
+         try (PrintWriter out = response.getWriter()) {
+             
+            out.println(db.deletePunch(request));
+        }
+        catch (Exception e) { e.printStackTrace(); }
     }
     
 
