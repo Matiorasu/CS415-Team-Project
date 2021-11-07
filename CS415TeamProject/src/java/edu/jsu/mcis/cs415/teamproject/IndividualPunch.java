@@ -58,28 +58,30 @@ public class IndividualPunch extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
       
-        response.setContentType("application/json;charset=UTF-8");
+    response.setContentType("application/json;charset=UTF-8");
 
         try(PrintWriter out = response.getWriter()){
+        
             // Get reference to the TASDatabase bean
             TASDatabase db = (TASDatabase)request.getSession().getAttribute("db");
             
             // get "punchid" parameter
             int punchid = Integer.parseInt(request.getParameter("punchid"));
 
-            // Delete the punch and store in boolean variable
+            // Delete punch and store boolean return value into variable
             boolean dp = db.deletePunch(punchid);
             
-            // confirm if the delete was successful and store in JSON object
+            // Create JSON object with success message
             String jsonString = "[{\"success\": " + dp + "}]";
 
-          //return the JSON object to the client
-          out.println(jsonString);
-          
-        } 
-        
-        catch (Exception e) { e.printStackTrace(); }
-    }
+           //return the JSON object to the client
+           out.println(jsonString);
+     
+        } //end of try block
+     
+        catch (Exception e) { e.printStackTrace();}
+     
+    } //end of doDelete() method
     
 
     @Override
