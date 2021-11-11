@@ -68,7 +68,7 @@ public class IndividualPunch extends HttpServlet {
             // get "punchid" parameter
             int punchid = Integer.parseInt(request.getParameter("punchid"));
 
-            // pass the punchid to the deletePunch method and store return value (a boolean) into the boolean variable called dp (if no records were affected, returns false; if one record was affected, returns true)
+            // pass the punchid to the deletePunch 
             boolean dp = db.deletePunch(punchid);
             
             // confirm if the delete was successful and store in JSON object
