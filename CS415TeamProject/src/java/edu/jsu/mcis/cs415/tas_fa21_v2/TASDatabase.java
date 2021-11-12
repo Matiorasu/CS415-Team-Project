@@ -625,6 +625,54 @@ public class TASDatabase {
         
     } // </editor-fold>
     
+    public ArrayList<EmployeePhone> getEmployeeContactInformation(int employeeid){
+
+        ArrayList<EmployeePhone> contactinformation = null; 
+        HashMap<String, String> p = null;
+        
+                try{
+                    
+                   String sql = "SELECT employeephone.*, employeephonetype.description FROM employeephone JOIN employeephonetype ON employeephone.employeephonetypeid = employeephonetype.id WHERE employeeid = ?";
+                   PreparedStatement pstatement = this.conn.prepareStatement(sql);
+                   pstatement.setInt(1, employeeid);
+                   
+                   boolean hasresults = pstatement.execute();
+            
+                    if ( hasresults ) {
+                
+                        contactinformation = new ArrayList<>();
+                
+                        ResultSet resultset = pstatement.getResultSet();
+                
+                        while (resultset.next()) {
+                            
+                            p = new HashMap<>();
+                    
+                            String id = String.valueOf(resultset.getInt("id"));
+                            String employeephonetypeid = String.valueOf(resultset.getInt("employeephonetypeid"));
+                            String name = resultset.getString("name");
+                            String number = resultset.getString("number");
+                            String description = resultset.getString("description");
+                            
+                            p.put("id", id);
+                            p.put("employeephonetypeid", employeephonetypeid);
+                            p.put("employeeid", String.valueOf(employeeid));
+                            p.put("name", name);
+                            p.put("number", number);
+                            p.put("description", description);
+                            
+                            EmployeePhone employeephone = new EmployeePhone(p);
+
+                            contactinformation.add(employeephone);
+                        }
+                    }
+                }
+                catch(SQLException e){ e.printStackTrace(); }
+                
+                return contactinformation;
+        
+    }
+    
     /* INSERT METHODS */
 
     // <editor-fold defaultstate="collapsed" desc="insertAbsenteeism(): Click on the + sign on the left to edit the code.">
