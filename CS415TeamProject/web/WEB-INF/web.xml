@@ -15,8 +15,8 @@
         <servlet-class>edu.jsu.mcis.cs415.teamproject.IndividualPunch</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Employee</servlet-name>
-        <servlet-class>edu.jsu.mcis.cs415.teamproject.Employee</servlet-class>
+        <servlet-name>EmployeeServlet</servlet-name>
+        <servlet-class>edu.jsu.mcis.cs415.teamproject.EmployeeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
@@ -31,8 +31,8 @@
         <url-pattern>/main/IndividualPunch</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Employee</servlet-name>
-        <url-pattern>/main/Employee</url-pattern>
+        <servlet-name>EmployeeServlet</servlet-name>
+        <url-pattern>/main/EmployeeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
