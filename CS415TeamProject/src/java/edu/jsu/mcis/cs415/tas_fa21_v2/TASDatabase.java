@@ -431,7 +431,6 @@ public class TASDatabase {
             String query = "SELECT * FROM punch WHERE badgeid = ? ORDER BY originaltimestamp";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, badgeid.getId());
-            //pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now().withNano(0)));
             
             boolean hasresults = pstmt.execute();
             
@@ -440,8 +439,6 @@ public class TASDatabase {
                 ResultSet resultset = pstmt.getResultSet();
                 resultset.last(); //move to last row of resultset
                 
-                //if (resultset.next()) {
-                    
                     int punchtypeid = resultset.getInt("punchtypeid");
                     
                     if (punchtypeid == 1){
@@ -450,7 +447,6 @@ public class TASDatabase {
                     else {
                         latestPunch = "CLOCKED OUT";
                     }
-                //}
             } 
         }
         catch (Exception e) { e.printStackTrace(); }
