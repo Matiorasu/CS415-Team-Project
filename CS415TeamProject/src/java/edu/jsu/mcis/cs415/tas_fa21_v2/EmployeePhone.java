@@ -15,7 +15,7 @@ public class EmployeePhone {
         
         this.id = Integer.parseInt(p.get("id"));
         this.employeeid = Integer.parseInt(p.get("employeeid"));
-        this.employeephonetype = Integer.parseInt(p.get("employeephonetype"));
+        this.employeephonetype = Integer.parseInt(p.get("employeephonetypeid"));
         
         this.name = p.get("name");
         this.number = p.get("number");
