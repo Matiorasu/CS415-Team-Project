@@ -1,12 +1,14 @@
 package edu.jsu.mcis.cs415.tas_fa21_v2;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.*;
 import java.time.temporal.*;
 import java.util.*;
 import javax.naming.*;
 import javax.sql.*;
+import java.sql.Timestamp;
 
 /**
  *
@@ -414,6 +416,50 @@ public class TASDatabase {
         
     } // </editor-fold>
     
+        // <editor-fold defaultstate="collapsed" desc="getLatestPunch(): Click on the + sign on the left to edit the code.">
+    /**
+     * Returns a String representing an individual employee punch for the current date and time.
+     * @param badgeid The unique badgeid of the employee
+     * @return The String object
+     */
+    public String getLatestPunch(Badge badgeid) {
+        
+        String latestPunch = null;
+
+        try {
+            
+            String query = "SELECT * FROM punch WHERE badgeid = ? ORDER BY originaltimestamp";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, badgeid.getId());
+            //pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now().withNano(0)));
+            
+            boolean hasresults = pstmt.execute();
+            
+            if ( hasresults ) {
+                
+                ResultSet resultset = pstmt.getResultSet();
+                resultset.last(); //move to last row of resultset
+                
+                //if (resultset.next()) {
+                    
+                    int punchtypeid = resultset.getInt("punchtypeid");
+                    
+                    if (punchtypeid == 1){
+                        latestPunch = "CLOCKED IN";
+                    }
+                    else {
+                        latestPunch = "CLOCKED OUT";
+                    }
+                //}
+            } 
+        }
+        catch (Exception e) { e.printStackTrace(); }
+
+        return latestPunch;
+           
+        
+    } // </editor-fold>
+    
     // <editor-fold defaultstate="collapsed" desc="getShift(): Click on the + sign on the left to edit the code.">
     /**
      * Returns a {@link Shift} object representing an individual shift rule set.
@@ -643,7 +689,7 @@ public class TASDatabase {
                         contactinformation = new ArrayList<>();
                 
                         ResultSet resultset = pstatement.getResultSet();
-                
+                        
                         while (resultset.next()) {
                             
                             p = new HashMap<>();
