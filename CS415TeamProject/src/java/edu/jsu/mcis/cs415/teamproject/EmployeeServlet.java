@@ -48,25 +48,21 @@ public class EmployeeServlet extends HttpServlet {
             // Get Shift
             Shift shift = db.getShift(employee.getBadge());
             
-            // Get employee contact information
+            // Get EmployeePhone list as ArrayList
             ArrayList<EmployeePhone> employeephone = db.getEmployeeContactInformation(employeeid);
             
-            // Get lifetime absenteeism
-            
-            
+            // Get latest CLOCKED IN or CLOCKED OUT punch value
+            String latestPunch = db.getLatestPunch(employee.getBadge());
 
             // Create JSON object
-            //String jsonString = TAS.getEmployeeAsJSON(employee, department, shift, absenteeism, contact);
+            String jsonString = TAS.getEmployeeAsJSON(employee, department, shift, employeephone, latestPunch);
             
             // Send employee information to client 
-            //out.println(jsonString);
+            out.println(jsonString);
             
         }
         catch (Exception e) { e.printStackTrace(); }
-        
-        
-        
-        
+  
     }
 
     
