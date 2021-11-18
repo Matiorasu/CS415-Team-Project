@@ -122,6 +122,73 @@ public class TAS {
     }
     
     
+        /**
+     * Returns a JSON string representing individual employee data 
+     * @param employee The employee object
+     * @param department The department object
+     * @param shift The shift object
+     * @param employeephone The employee phone objects as ArrayList
+     * @param latestpunch The latest punch value from employee (CLOCKED IN or CLOCKED OUT)
+     * @return The employee's data as a JSON string
+     * @see Employee
+     */
+    @SuppressWarnings("unchecked")
+    public static String getEmployeeAsJSON(Employee employee, Department department, Shift shift, ArrayList<EmployeePhone> employeephone, String latestpunch) {
+        
+        JSONObject jsonObject = new JSONObject(); 
+        JSONArray jsonPunch = new JSONArray(); 
+        HashMap<String, String> ep = null;
+        
+        String json = null;
+        
+        try {
+
+                // Get general employee information
+                jsonObject.put("employeeid", String.valueOf(employee.getId()));
+                jsonObject.put("departmentid", String.valueOf(employee.getDepartmentid()));
+                jsonObject.put("shiftid", String.valueOf(employee.getShiftid()));
+                jsonObject.put("firstname", employee.getFirstname());
+                jsonObject.put("middlename", employee.getMiddlename());
+                jsonObject.put("lastname", employee.getLastname());
+                jsonObject.put("lastname", String.valueOf(employee.getLastname()));
+                jsonObject.put("employeetype", employee.getEmployeetype().toString());
+                jsonObject.put("badge", employee.getBadge().toString());
+                jsonObject.put("active", employee.getActive() != null ? LocalDate.parse(employee.getActive().toString()) : null);
+                jsonObject.put("inactive", employee.getInactive() != null ? employee.getInactive().toString() : null);
+                // Get department information
+                jsonObject.put("department", department.getDescription());
+                jsonObject.put("departmentid", String.valueOf(department.getId()));
+                // Get shift information
+                jsonObject.put("shift", shift.getDescription());
+                // Get latest punch value (CLOCKED IN or CLOCKED OUT)
+                jsonObject.put("latestpunch", latestpunch);
+                // Get employee contact information
+                for (int i = 0; i < employeephone.size(); i++){
+                    
+                    ep = new HashMap<>();
+                    
+                    ep.put("id", String.valueOf(employeephone.get(i).getId()));
+                    ep.put("employeephonetypeid", String.valueOf(employeephone.get(i).getEmployeephonetype()));
+                    ep.put("name", employeephone.get(i).getName());
+                    ep.put("number", employeephone.get(i).getNumber());
+                    ep.put("description", employeephone.get(i).getDescription());
+
+                    jsonObject.put(employeephone.get(i).getDescription(), ep);
+                    
+                }
+  
+                jsonPunch.add(jsonObject); 
+
+            json = JSONValue.toJSONString(jsonPunch);
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return json;
+        
+    }
+    
+    
     
     /**
      * Returns a JSON string representing the punch data from the specified list
