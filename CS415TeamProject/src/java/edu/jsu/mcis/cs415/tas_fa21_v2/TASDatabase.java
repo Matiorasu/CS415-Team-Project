@@ -804,6 +804,131 @@ public class TASDatabase {
         
     }
     
+    public String getEmployeeTypesAsSelectList() {
+        
+        StringBuilder s = new StringBuilder();
+        
+        try {
+            
+            String query;
+            PreparedStatement pstatement;
+            boolean hasresults = false;
+            
+            query = "SELECT * FROM employeetype";
+            pstatement = conn.prepareStatement(query);
+            hasresults = pstatement.execute();
+            
+            if (hasresults) {
+                
+                ResultSet resultset = pstatement.getResultSet();
+                
+                s.append("<select name=\"employeetypeid\" size=\"1\" id=\"employeetypeid\">\n");
+                s.append("<option disabled selected>(select an employee type)</option>\n");
+                
+                while (resultset.next()) {
+                    
+                    s.append("<option value=\"");
+                    s.append(resultset.getInt("id"));
+                    s.append("\">");
+                    s.append(resultset.getString("description"));
+                    s.append("</option>\n");
+                    
+                }
+                
+                s.append("</select>\n");
+                
+            }            
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return s.toString();
+        
+    }
+    
+    public String getDepartmentsAsSelectList() {
+        
+        StringBuilder s = new StringBuilder();
+        
+        try {
+            
+            String query;
+            PreparedStatement pstatement;
+            boolean hasresults = false;
+            
+            query = "SELECT id, description FROM department";
+            pstatement = conn.prepareStatement(query);
+            hasresults = pstatement.execute();
+            
+            if (hasresults) {
+                
+                ResultSet resultset = pstatement.getResultSet();
+                
+                s.append("<select name=\"departmentid\" size=\"1\" id=\"departmentid\">\n");
+                s.append("<option value=\"0\" disabled selected>(select a department)</option>\n");
+                
+                while (resultset.next()) {
+                    
+                    s.append("<option value=\"");
+                    s.append(resultset.getInt("id"));
+                    s.append("\">");
+                    s.append(resultset.getString("description"));
+                    s.append("</option>\n");
+                    
+                }
+                
+                s.append("</select>\n");
+                
+            }            
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return s.toString();
+        
+    }
+    
+    public String getShiftsAsSelectList() {
+        
+        StringBuilder s = new StringBuilder();
+        
+        try {
+            
+            String query;
+            PreparedStatement pstatement;
+            boolean hasresults = false;
+            
+            query = "SELECT id, description FROM shift";
+            pstatement = conn.prepareStatement(query);
+            hasresults = pstatement.execute();
+            
+            if (hasresults) {
+                
+                ResultSet resultset = pstatement.getResultSet();
+                
+                s.append("<select name=\"shiftid\" size=\"1\" id=\"shiftid\">\n");
+                
+                while (resultset.next()) {
+                    
+                    s.append("<option value=\"");
+                    s.append(resultset.getInt("id"));
+                    s.append("\">");
+                    s.append(resultset.getString("description"));
+                    s.append("</option>\n");
+                    
+                }
+                
+                s.append("</select>\n");
+                
+            }            
+            
+        }
+        catch (Exception e) { e.printStackTrace(); }
+        
+        return s.toString();
+        
+    }
+    
     /* PRIVATE METHODS */
     
     // <editor-fold defaultstate="collapsed" desc="openConnection(): Click on the + sign on the left to edit the code.">

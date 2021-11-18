@@ -24,7 +24,7 @@
             view the employee's punch history for the week.
         </p>
         <p>
-            <a href="<%= request.getContextPath() %>/main/page2.jsp"><b>Add New Employee</b></a><br>
+            <a href="<%= request.getContextPath() %>/main/addemployee.jsp"><b>Add New Employee</b></a><br>
             Use this module to add a new employee to the system.
         </p>
         <p>
